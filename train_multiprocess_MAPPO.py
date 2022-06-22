@@ -22,6 +22,7 @@ from tqdm import tqdm
 
 import utils
 from policies import DQNPolicy
+from MAPPOPolicy import MAPPOPolicy
 
 torch.backends.cudnn.benchmark = True
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -437,7 +438,7 @@ def main(cfg):
     if cfg.use_egl_renderer:
         cfg.use_egl_renderer = False  # Disable EGL rendering since multiprocessing is much faster
 
-    policy = DQNPolicy(cfg, train=True)
+    policy = MAPPOPolicy(cfg, train=True)
     logger = Logger(cfg)
     collector = Collector(cfg, policy, logger, num_workers=cfg.num_parallel_collectors)
     trainer = Trainer(cfg, policy, logger)

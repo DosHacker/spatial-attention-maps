@@ -33,7 +33,7 @@ def main(args):
         env.close()
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--config-path')
+parser.add_argument('--config-path',default='logs/20220618T032651628563-lifting_2_pushing_2-large_empty-ours/config.yml')
 parser.add_argument('--real', action='store_true')
 parser.add_argument('--real-robot-indices', default='0,1,2,3')
 parser.add_argument('--real-cube-indices', default='0,1,3,5,6,7,8,9,10,11')

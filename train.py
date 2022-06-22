@@ -349,7 +349,7 @@ def main(cfg):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--config-path',default='config/experiments/ours/lifting_4-small_empty-ours.yml')
+    parser.add_argument('--config-path',default='config/experiments/comparisons/predicted_intention/lifting_4-large_doors-predicted.yml')
     config_path = parser.parse_args().config_path
     if config_path is None:
         if sys.platform == 'darwin':

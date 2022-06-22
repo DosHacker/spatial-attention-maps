@@ -2,7 +2,7 @@ import argparse
 
 # Prevent numpy from using up all cpu
 import os
-os.environ['MKL_NUM_THREADS'] = '1'  # pylint: disable=wrong-import-position
+os.environ['MKL_NUM_THREADS'] = '6'  # pylint: disable=wrong-import-position
 
 import numpy as np
 import utils
@@ -11,7 +11,7 @@ def run_eval(cfg, num_episodes=20):
     random_seed = 0
 
     # Create env
-    env = utils.get_env_from_cfg(cfg, random_seed=random_seed, use_egl_renderer=False)
+    env = utils.get_env_from_cfg(cfg, random_seed=random_seed, use_egl_renderer=False)#,show_gui=True)
 
     # Create policy
     policy = utils.get_policy_from_cfg(cfg, random_seed=random_seed)
@@ -54,5 +54,5 @@ def main(args):
     print(eval_path)
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--config-path')
+parser.add_argument('--config-path',default='logs/20220615T094230481470-pushing_4-small_empty-base/config.yml')
 main(parser.parse_args())
