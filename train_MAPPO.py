@@ -248,6 +248,8 @@ def train(all_args, policy_net, optimizer, batch, transform_fn,
             value_preds_batch.append(buffer.buffer[i].value_pred)
             return_batch.append(buffer.returns[i])
             old_action_log_probs_batch.append(buffer.buffer[i].action_log_prob)
+    if not obs_batch:
+        return
     share_obs_batch=torch.cat([s.unsqueeze(0) for s in share_obs_batch]).to(device)
     obs_batch=torch.cat([transform_fn(s) for s in obs_batch if s is not None]).to(device,non_blocking=True)
     actions_batch=torch.tensor(actions_batch, dtype=torch.long).to(device)
