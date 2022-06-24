@@ -14,7 +14,7 @@ import os
 
 from MAPPOPolicy import MAPPOPolicy
 
-os.environ['MKL_NUM_THREADS'] = '1'  # pylint: disable=wrong-import-position
+os.environ['MKL_NUM_THREADS'] = '6'  # pylint: disable=wrong-import-position
 
 import numpy as np
 import torch
@@ -48,7 +48,7 @@ class ReplayBuffer:
     def reset(self, done):
         self.position = 0
         self.buffer = []
-
+        self.returns=[]
     def push(self, *args):
         # if len(self.buffer) < self.capacity:
         #     self.buffer.append(None)

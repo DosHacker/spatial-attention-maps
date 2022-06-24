@@ -97,9 +97,9 @@ class MAPPOPolicy:
                             a = random.randrange(VectorEnv.get_action_space(robot_type))
                         else:
                             # a=torch.multinomial(action_logits,1)
-                            a=action_logits.sample()
+                            a=action_logits.sample().item()
                         # action_log_probs[i][j]=action_logits[0,a]
-                        action_log_probs[i][j] = action_logits.log_probs(torch.LongTensor([[a]]))
+                        action_log_probs[i][j] = action_logits.log_probs(torch.LongTensor([[a]]).to(self.device))
                         action[i][j] = a
                         output[i][j] = o.cpu().numpy()
                         cent_obs[i]=torch.cat([self.apply_transform(c) for c in cent_obs[i]]).to(self.device)
