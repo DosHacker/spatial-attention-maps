@@ -257,6 +257,10 @@ def train(all_args, policy_net, optimizer, batch, transform_fn,
     return_batch=torch.tensor(return_batch, dtype=torch.float32).view(-1,1).to(device)
     old_action_log_probs_batch=torch.tensor(old_action_log_probs_batch, dtype=torch.float32).view(-1,1).to(device)
     adv_targ=torch.tensor(adv_targ, dtype=torch.float32).view(-1,1).to(device)
+
+    mean_advantages = np.nanmean(adv_targ)
+    std_advantages = np.nanstd(adv_targ)
+    adv_targ = (adv_targ - mean_advantages) / (std_advantages + 1e-5)
     sample = share_obs_batch, obs_batch, actions_batch, value_preds_batch, return_batch, old_action_log_probs_batch, adv_targ
 
     # Compute log probability and values and entropy of given actions
@@ -298,7 +302,7 @@ def train(all_args, policy_net, optimizer, batch, transform_fn,
 
     # critic update
     p1.join()
-    values = torch.tensor(values, dtype=torch.float32,requires_grad=True).view(-1,1).to(device)
+    values=torch.cat(values).view(-1,1)
 
     value_loss = cal_value_loss(all_args, values, value_preds_batch, return_batch)
 
@@ -411,8 +415,9 @@ def main(cfg):
 
         cent_obs = env.get_state(all_robots=True)
 
-        exploration_eps = 1 - (1 - cfg.final_exploration) * min(1, max(0, timestep - learning_starts) / (
-                    cfg.exploration_frac * cfg.total_timesteps))
+        # exploration_eps = 1 - (1 - cfg.final_exploration) * min(1, max(0, timestep - learning_starts) / (
+        #             cfg.exploration_frac * cfg.total_timesteps))
+        exploration_eps=0#MAPPO中只使用策略网络产生的动作概率选取动作，不会随机产生动作
         if cfg.use_predicted_intention:
             use_ground_truth_intention = max(0,
                                              timestep - learning_starts) / cfg.total_timesteps <= cfg.use_predicted_intention_frac
